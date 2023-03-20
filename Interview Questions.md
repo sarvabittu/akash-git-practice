@@ -73,6 +73,127 @@ Terraform isn’t just for Amazon Web Services and other physical service provid
 In today’s world, software is becoming increasingly networked and distributed. Although virtualized demo environments can be created with tools such as Vagrant, displaying software on real infrastructure that closely replicates production environments remains difficult.
 A Terraform configuration can be used by software authors to design, provision, and bootstrap a demo on cloud providers such as AWS. End users can simply demo the application on their own infrastructure, and configuration options such as cluster size can be changed to evaluate tools at any scale.
 
+### Q. How to create a SSH in Terraform when using AWS?
+Answer: SSH private keys for Terraform can be created using tls_private_key
+```
+variable "terraform_key" {}
+
+resource "tls_private_key" "example" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
+
+resource "aws_key_pair" "generated_key" {
+  terraform_key   = var.terraform_key
+  public_key = tls_private_key.example.public_key_openssh
+}
+
+data "aws_ami" "ubuntu" {
+  most_recent = true
+
+  filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+
+  owners = ["0977"] # Canonical
+}
+
+resource "aws_instance" "web" {
+  ami           = data.aws_ami.ubuntu.id
+  instance_type = "t2.micro"
+  terraform_key      = aws_key_pair.generated_key.terraform_key
+
+  tags {
+    Name = "Terraform Example"
+  }
+}
+```
+
+### Q. How to upgrade terraform to a specific version ?
+Answer: After installation using brew install tfenv for installing terraform we can select the specific version -
+```
+$ tfenv list-remote
+0.13.0
+0.13.0-rc1
+0.13.0-beta2
+0.13.0-beta1
+0.13.0
+0.11.15
+...
+
+$ tfenv install 0.11.15
+[INFO] Installing Terraform v0.11.15
+[INFO] Downloading release tarball from https://releases.hashicorp.com/terraform/0.11.15/terraform_0.11.14_darwin_amd64.zip
+...
+[INFO] Installation of terraform v0.11.15 successful
+[INFO] Switching to v0.11.14
+[INFO] Switching completed
+```
+
+### Q. How to set up a lambda function triggered by a scheduled event source when using Terraform?
+Answer: This can be achieved using aws_cloudwatch_event_target as follows -
+```
+resource "aws_lambda_function" "check_javainuse" {
+    filename = "check_javainuse.zip"
+    function_name = "checkFoo"
+    role = "arn:aws:iam::424242:role/something"
+    handler = "index.handler"
+}
+
+resource "aws_cloudwatch_event_rule" "check_every_ten_minutes" {
+    name = "every-ten-minutes"
+    description = "Fires every ten minutes"
+    schedule_expression = "rate(10 minutes)"
+}
+
+resource "aws_cloudwatch_event_target" "check_javainuse_every_ten_minutes" {
+    rule = ""
+    target_id = "check_javainuse"
+    arn = ""
+}
+
+resource "aws_lambda_permission" "allow_cloudwatch_to_call_check_foo" {
+    statement_id = "AllowExecutionFromCloudWatch"
+    action = "lambda:InvokeFunction"
+    function_name = ""
+    principal = "events.amazonaws.com"
+    source_arn = ""
+```
+
+### Q. How to make use of AND/OR operators in Terraform?
+Answer: Terraform has no defined binary types. How ever we can make use of Simple math for [interpolations (https://developer.hashicorp.com/terraform/language/v1.1.x/configuration-0-11/interpolation#math).
+```
+count = signum( + )
+```
+
+### Q. How to attach AWS managed policies to a role for Terraform?
+Answer: This can be achieved using Data Source: [aws_iam_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy.html)
+```
+data "aws_iam_policy" "ReadWriteAccess" {
+  arn = "arn:aws:iam::aws:policy/ReadWriteAccess"
+}
+```
+### Q. How to index all attributes when using DynamoDB with Terraform ?
+Answer: This can be achieved using the [AttributeDefinition](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_AttributeDefinition.html)
+```
+resource "aws_dynamodb_table" "test-javainuse" {
+  name           = "javainuse-table-name"
+  read_capacity  = 5
+  write_capacity = 5
+  hash_key       = "javainuse-attribute"
+
+  attribute {
+    name = "javainuse-attribute"
+    type = "S"
+  }
+}
+```
 
 ### Q.How does Terraform help in discovering plugins?
 Answer: Terraform interprets configuration files in the operational directory with the authority “Terraform init.” Then, Terraform determines the necessary plugins and searches for installed plugins in various locations. Terraform may also download additional plugins at times. Then it decides which plugin versions to use and creates a security device file to ensure that Terraform uses the same plugin versions.
