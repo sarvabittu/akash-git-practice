@@ -1,5 +1,7 @@
 # Terraform Interview Questions:
 
+![Terraform](https://www.techgeeknext.com/img/terraform/terraform-logo.png)
+
 ### Q. What is Terraform?
 Answer:Terraform is a tool for creating, updating, and versioning infrastructure securely and efficiently. Terraform is capable of managing both current and popular service providers, as well as custom in-house solutions. Configuration files notify Terraform which components are required to run a single application or an entire datacenter.
 
@@ -380,3 +382,158 @@ resource "aws_route_table_association" "public_association" {
   route_table_id = aws_route_table.public_route_table.id
 }
 ```
+### Q. Which flag would you add to terraform plan to save the execution plan to a file?
+Answer: -out=FILENAME
+
+[Terraform CLI Commands](https://www.terraform.io/docs/cli/commands/plan.html)
+
+### Q. A Terraform local value can reference other Terraform local values.
+
+A. True
+
+B. False
+
+Answer: A
+
+[Read More on locals](https://www.terraform.io/docs/configuration-0-11/locals.html)
+
+### Q. Which of the following is not a valid Terraform collection type?
+
+A. list            
+
+B. map             
+
+C. tree
+
+D. set
+
+Answer: C 
+
+[Read more on type-constraints](https://www.terraform.io/docs/language/expressions/type-constraints.html)
+
+### Q. When running the command terraform taint against a managed resource you want to force recreation upon, Terraform will immediately destroy and recreate the resource.
+
+A. True
+
+B. False
+
+Answer: B 
+
+[Read more on tiants](https://www.devopsschool.com/blog/terraform-taint-and-untaint-explained-with-example-programs-and-tutorials/)
+
+### Q. All standard backend types support state storage, locking, and remote operations like plan, apply and destroy.
+
+A. True
+
+B. False
+
+Answer: A
+
+[Read more on backend/setting/remote/](https://www.terraform.io/docs/language/settings/backends/remote.html)
+
+### Q. How can terraform plan aid in the development process?
+
+A. Validates your expectations against the execution plan without permanently modifying state
+
+B. Initializes your working directory containing your Terraform configuration files
+
+C. Formats your Terraform configuration files
+
+D. Reconciles Terraformג€™s state against deployed resources and permanently modifies state using the current status of deployed resources
+
+Answer: A
+
+[Read more on terraform issues](https://github.com/hashicorp/terraform/issues/19235)
+
+### Q. You would like to reuse the same Terraform configuration for your development and production environments with a different state file for each.
+Which command would you use?
+
+A. terraform import
+
+B. terraform workspace
+
+C. terraform state
+
+D. terraform init
+
+Answer: B
+
+### Q. What is the name assigned by Terraform to reference this resource?
+
+A. compute_instance
+
+B. main
+
+C. google
+
+D. teat
+
+Answer: B
+
+### Q. You're building a CI/CD (continuous integration/ continuous delivery) pipeline and need to inject sensitive variables into your Terraform run.
+How can you do this safely?
+
+A. Pass variables to Terraform with a ג€"var flag
+
+B. Copy the sensitive variables into your Terraform code
+
+C. Store the sensitive variables in a secure_vars.tf file
+
+D. Store the sensitive variables as plain text in a source code repository
+
+Answer: B
+
+### Q. Your security team scanned some Terraform workspaces and found secrets stored in a plaintext in state files.
+How can you protect sensitive data stored in Terraform state files?
+
+A. Delete the state file every time you run Terraform
+
+B. Store the state in an encrypted backend
+
+C. Edit your state file to scrub out the sensitive data
+
+D. Always store your secrets in a secrets.tfvars file.
+
+Answer: B
+
+[Read more on sensitive data](https://www.terraform.io/docs/language/state/sensitive-data.html)
+
+### Q.In contrast to Terraform Open Source, when working with Terraform Enterprise and Cloud Workspaces, conceptually you could think about them as completely separate working directories.
+
+A. True
+
+B. False
+
+Answer: A
+
+### Q. How is terraform import run?
+
+A. As a part of terraform init
+
+B. As a part of terraform plan
+
+C. As a part of terraform refresh
+
+D. By an explicit call
+
+E. All of the above
+
+Answer: D
+
+### Q. You have a simple Terraform configuration containing one virtual machine (VM) in a cloud provider. You run terraform apply and the VM is created successfully.
+What will happen if you delete the VM using the cloud provider console, and run terraform apply again without changing any Terraform code?
+A. Terraform will remove the VM from state file
+B. Terraform will report an error
+C. Terraform will not make any changes
+D. Terraform will recreate the VM
+Answer:D
+
+### Q. You want to know from which paths Terraform is loading providers referenced in your Terraform configuration (*.tf files). You need to enable debug messages to find this out.
+Which of the following would achieve this?
+A. Set the environment variable TF_LOG=TRACE
+B. Set verbose logging for each provider in your Terraform configuration
+C. Set the environment variable TF_VAR_log=TRACE
+D. Set the environment variable TF_LOG_PATH
+
+Answer: A
+[Read more on Terrafor variables](https://www.terraform.io/docs/cli/config/environment-variables.html)
