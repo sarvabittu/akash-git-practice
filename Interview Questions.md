@@ -45,6 +45,14 @@ Answer: Terraform creates an implementation plan, defines what it will do to ach
 ### Q. How to check the installed version of Terraform?
 Answer: We can use terraform -version of the command to identify the version which we are running.
 
+### Q. Define Terraform init?
+Answer: Terraform initialises the code with the command terraform init. This command is used to set up the working directory for Terraform configuration files. It is safe to run this command multiple times.
+
+You can use the init command for:
+- Installing Plugins
+- Installation of a Child Module
+- Initialization of the backend
+
 ### Q. What are the ways to lock Terraform module versions?
 Answer: You can use the terraform module registry as a source and specify the attribute’version’ in the module in a terraform configuration file. If you are using the GitHub repository as a source, you must use ‘? ref’ to specify the branch, version, and query string.
 
@@ -537,3 +545,101 @@ D. Set the environment variable TF_LOG_PATH
 
 Answer: A
 [Read more on Terrafor variables](https://www.terraform.io/docs/cli/config/environment-variables.html)
+
+### Q. How would you recover from a failed apply in Terraform?
+Answer: You can save your configuration in version control and commit it before making any changes, and then use the features of your version control system to revert to an earlier configuration if necessary. You must always recommit the previous version code in order for it to be the new version in the version control system.
+
+### Q. What do you mean by Terragrunt, list some of its use cases?
+Answer: Terragrunt is a lightweight wrapper that adds tools for maintaining DRY configurations, working with multiple Terraform modules, and managing remote states.
+
+Use cases:
+
+- Keep your Terraform code DRY
+- Maintain a DRY remote state configuration.
+- Keep your CLI flags DRY
+- Run Terraform commands on multiple modules at the same time.
+- Use multiple AWS accounts.
+
+### Q. What steps should be followed for making an object of one module to be available for the other module at a high level?
+Answer: The following are the steps to take in order to make an object from one module available to the other module at a high level:
+
+- First, in a resource configuration, an output variable must be defined. The scope of local and to a module is not declared until you declare resource configuration details.
+- You must now declare the output variable of module A so that it can be used in the configurations of other modules. You should create a brand new and current key name, and the value should be kept equal to the module A output variable.
+- You must now create a file variable.tf for module B. Create an input variable inside this file with the same name as the key you defined in module B. This variable in a module enables the resource’s dynamic configuration. Rep the process to make this variable available to another module as well. This is due to the fact that the variable established here has a scope limited to module B.
+
+### Q. What is State File Locking?
+Answer: State file locking is a Terraform mechanism that prevents operations on a specific state file from being performed by multiple users at the same time. Once the lock from one user is released, any other user who has taken a lock on that state file can operate on it. This aids in the prevention of state file corruption. The acquiring of a lock on a state file in the backend is a backend operation. If acquiring a lock on the state file takes longer than expected, you will receive a status message as an output.
+
+### Q. What is a Remote Backend in Terraform?
+Answer:  [Terraform](https://k21academy.com/cloud-infrastructure-automation-certification-terraform-associate-self-study-training/) remote backend is used to store Terraform’s state and can also run operations in Terraform Cloud. Multiple terraform commands such as init, plan, apply, destroy (terraform version >= v0.11.12), get, output, providers, state (sub-commands: list, mv, pull, push, rm, show), taint, untaint, validate, and many more are available via remote backend. It is compatible with a single remote Terraform cloud workspace or multiple workspaces. You can use terraform cloud’s run environment to run remote operations such as terraform plan or terraform apply.
+
+### Q. What is a Tainted Resource?
+Answer: Tainted resources are those that must be destroyed and recreated upon the next apply command. Nothing changes on infrastructure when you mark a resource as tainted, but the state file is updated with this information (destroy and create). After marking a resource as tainted, Terraform plan out will show that the resource will be destroyed and recreated, and the changes will be implemented when the next apply occurs.
+
+Read More on [Terraform Work Flow](Terraform Workflow)
+
+
+### Q. Are callbacks possible with Terraform on Azure?
+ANswer: Terraform uses Azure Event Hub to perform Azure callbacks. It aids in achieving functionality such as sending a callback to the system and other events. To make the process easier, Terraform AzureRM already includes this functionality.
+
+### Q. How to prevent Error Duplicate Resource
+ANswer: It can be done in three ways depending on the situation and the requirement
+
+1) By deleting the resource, Terraform code will no longer manage it.
+
+2) By removing resources from APIs
+
+3) Importing action will also aid in resource elimination.
+
+### Q. Explain the workflow of the core terraform.
+ANswer: Terraform’s core workflow has three steps:
+Write – Create infrastructure in the form of code.
+Plan – Plan ahead of time to see how the changes will look before they are implemented.
+Apply – Create a repeatable infrastructure.
+
+![Terraform Core Workflow](https://k21academy.com/wp-content/uploads/2021/02/core_terraform_workflow-e1641983172307.png)
+
+### Q. Explain the architecture of Terraform request flow.
+ANswer: A request in Terraform undergoes the following steps as shown in the diagram:
+![Terraform Request flow architecture](https://k21academy.com/wp-content/uploads/2021/02/Terraform_request_flow-e1641983481340.png)
+
+**Command Line Interface (CLI):**
+
+CLI (Common Language Interface) (command package)
+
+Except for some early bootstrapping in the root package, when a user launches the terraform programme, execution immediately jumps into one of the command package’s “command” implementations (not shown in the diagram). The commands store the mapping between user-facing command names and their corresponding command package types. The go file is located in the repository’s root directory.
+
+The command implementation’s responsibility for these commands is to read and parse any command line arguments, command-line options, and environment variables required for the specified command and use them to construct a backend. object of operation The operation is then passed to the currently selected backend.
+
+**Backends:**
+
+A backend in Terraform is responsible for a number of things:
+
+Execute operations (e.g. plan, apply)
+Variables defined in the workspace can be saved.
+to store the current state
+The local backend retrieves the current state for the workspace specified in the operation using a state manager (either statemgr.Filesystem if the local backend is used directly, or an implementation provided by whatever backend is being wrapped), and then uses the config loader to load and perform initial processing/validation of the configuration specified in the operation. It then creates a terraform.context object using these parameters as well as the other parameters supplied in the process. The main object performs terraform operations.
+
+
+**Configuration Loader :**
+
+Model types represent the top-level configuration structure in package configs. Config represents a configuration (the root module and all of its child modules). Although the configs package contains some low-level functionality for creating configuration objects, the configload is the primary entry point. Loader can be found in the configload subpackage. A loader handles all of the complexities associated with installing child modules (during terraform init) and then locating those modules when a configuration is loaded by a backend. It takes the path to the root module and loads all of the child modules recursively to produce a single configuration.
+
+**State Manager:**
+
+The state manager is in charge of storing and retrieving snapshots of a workspace’s Terraform state. Each manager implements a subset of the interfaces provided by the statemgr package, with the majority of managers covering the entire set of statemgr. Complete operation. The smaller interfaces are commonly used in other function signatures to specify what actions the function may take on the state manager; there is no reason to create a state manager that does not implement all of statemgr. Full.
+
+**Graph Builder:**
+
+The terrain. The Context method calls a graph builder. A graph builder is used to represent the fundamental phases of that action, as well as the dependencies between them. Because of the differences in the graph-building process, each operation has its own graph builder. For a “plan” operation, a graph must be constructed directly from the configuration, whereas a “apply” action constructs its graph from the set of alterations mentioned in the plan being applied.
+
+**Graph Walk:**
+
+The graph walking method explores each vertex of the graph while keeping the graph’s “happens after” edges in mind. Every vertex in the graph is evaluated so that the “happens after” edges are taken into account. The graph walk algorithm will evaluate multiple vertices at once if possible.
+
+**Vertex Evaluation:**
+
+Execution refers to the action taken for each vertex during a graph walk. Execution performs a set of random operations that are appropriate for the vertex type in question. Before the graph walk can begin evaluating other vertices with “happens after” edges, a vertex must be correctly completed. When one or more errors occur during evaluation, the graph walk is paused, and the errors are returned to the user. questions for terraform interviews
+
+### Q. Differentiate between Terraform and Cloudformation.
+Answer: 
