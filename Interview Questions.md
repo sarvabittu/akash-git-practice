@@ -643,3 +643,59 @@ Execution refers to the action taken for each vertex during a graph walk. Execut
 
 ### Q. Differentiate between Terraform and Cloudformation.
 Answer: 
+![Terraform and Cloud Formation](https://miro.medium.com/max/843/1*6xmUBOOJgMPbAy8tmqxQyw.png)
+
+- **User-friendliness:** Terraform works with a variety of Cloud Service Providers, including AWS, Azure, Google Cloud Platform, and others, whereas CloudFormation only works with AWS services. Terraform covers the vast majority of AWS resources.
+
+- **Depending on the language:** CloudFormation supports JSON and YAML. CloudFormation is now simple to grasp and apply. AWS developers, on the other hand, are not permitted to create CloudFormation templates larger than 51MB. If the size of a template exceeds this limit, the developers must create a layered stack for it.
+
+Terraform, on the other hand, makes use of Hashicorp’s own HCL programming language (Hashicorp Configuration Language). This language is also JSON-compatible.
+
+- **State-management:** Because CloudFormation is an AWS managed service, it inspects the infrastructure on a regular basis to ensure that it is in good working order.If anything changes, CloudFormation receives a detailed response.
+Terraform, on the other hand, stores the state of the infrastructure on the provisioning machine, which can be a virtual machine or a remote computer. Terraform defines the resources it maintains using the state as a map, which is saved as a JSON file.
+To summarise, CloudFormation manages Cloudformation’s state by default, preventing conflicting changes. Terraform saves the state to a local disc, making state synchronisation easier. Terraform states can also be saved in storage services such as S3, which is a recommended additional state management strategy. This must be defined on the backend to facilitate and secure management.
+
+- **Cost:** The best part is that both of these programmes are completely free. Both of these technologies have sizable online communities that provide a wealth of information and examples. Cloudformation is completely free. Customers only need to pay for the AWS service provided by CloudFormation. Terraform is an open-source application that can be used for free. Terraform, on the other hand, has a paid enterprise version that includes additional collaboration and governance features.
+
+- **Integration of Multiple Clouds:**
+Terraform is the way to go if you want to provide services across multiple cloud platforms. While Terraform can be used with AWS, GCP, Azure, and other cloud providers, CloudFormation is only available on AWS. Cloudformation is not for you if you have multiple cloud installations. If you use AWS resources such as EC2, S3, and so on, you should use Cloudformation.
+
+
+### Q. Are callbacks possible with Terraform on Azure ?
+Answer: Yes. This is possible with Azure Event Hubs.
+
+### Q. What is Terraform Directory?
+Answer:Terraform Directory, which Terraform uses to manage cached provider plugins and modules, as well as to record which workspace is currently active and the last known backend configuration in case state needs to be migrated on the next run.
+
+### Q. Is history the same as it is on the web while using TFS API to provide resources ?
+Answer: Yes, the narration is similar to that found on the web because UI uses API as its foundation. Everything on the UI is available via other methods and the API.
+
+### Q. What is a Private Module Registry?
+Answer: Using the private module registry, Terraform Cloud users can create and confidentially share infrastructure modules within an organisation. The private module registry in Terraform Enterprise allows you to share modules within or across organisations.
+
+### Q. Does Terraform support multi-provider deployments?
+Answer: Terraform is a powerful tool in multi-provider deployments because it is not tied to a specific infrastructure or cloud provider. You can manage all resources with the same set of configuration files, sharing variables and defining dependencies across providers.
+
+### Q. How is duplicate resource error ignored during terraform apply ?
+Answer: 
+- To stop managing those resources, remove them from your Terraform code.
+- Remove the resources from the API (cloud provider) and recreate them using Terraform.
+- Terraform those resources and remove the terraform code that is attempting to recreate them.
+- Use terraform apply —target=xxx to apply only the resources you require.
+
+### Q. What are some of the built-in provisioners available in Terraform?
+Answer: 
+- abspath.
+- dirname.
+- pathexpand.
+- basename.
+- file.
+- fileexists.
+- fileset.
+- filebase64
+
+### Q. 
+Answer: 
+
+### Q. 
+Answer:
