@@ -694,8 +694,98 @@ Answer:
 - fileset.
 - filebase64
 
-### Q. 
+### Q. What are the components of Terraform architecture?
 Answer: 
+- Sub-graphs
+- Expression Evaluation
+- Vertex Evaluation
+- Graph Walk
+- Graph Builder
+- State Manager
+- Configuration Loader
+- CLI (Command Line interface)
+- Backend
 
-### Q. 
-Answer:
+### Q. Define Resource Graph in Terraform
+Answer: A resource graph is a graphical representation of the available resources. It enables the modification and creation of independent resources at the same time. Terraform creates a plan for the graph’s configuration in order to generate plans and refresh the state. It efficiently and effectively creates structure to help us understand the disadvantages.
+
+### Q. Can you provide a few examples where we can use for Sentinel policies?
+Answer: Sentinels are an effective way to implement a wide range of policies in Terraform. Here are a couple of examples:
+- Enforce explicit resource ownership.
+- Limit the roles that the cloud provider can play.
+- Examine the audit trail for Terraform Cloud operations.
+- Only certain resources, providers, or data sources may be prohibited.
+- Make resource tagging mandatory.
+- In the Private Module Registry, you can limit how modules are used.
+
+### Q. What are the various levels of Sentinel enforcement?
+Answer: Sentinel has three levels of enforcement: advisory, soft mandatory, and hard mandatory.
+
+- Advisory : Logged in but permitted to pass. When a user initiates a plan that violates the policy, an advisory is issued.
+- Soft Mandatory : Unless an override is specified, the policy must be followed. Overrides are only available to administrators.
+- Hard Mandatory : The policy must be implemented regardless. Unless and until this policy is removed, it cannot be overridden. Terraform’s default enforcement level is this.
+
+### Q. How to Store Sensitive Data in Terraform?
+Answer: To communicate with your cloud provider’s API, Terraform requires credentials. However, these credentials are frequently saved in plaintext on your desktop. Every day, GitHub is exposed to thousands of API and cryptographic keys. As a result, your API keys should never be directly stored in Terraform code. To store passwords, TLS certificates, SSH keys, and anything else that shouldn’t be stored in plain text, use encrypted storage.
+
+### Q. What is Terraform Core? Tell us some primary responsibilities of it
+Answer: Terraform Core is a binary written in the Go programming language and statically compiled. The compiled binary provides Terraform users with an entry point. The primary responsibilities are as follows:
+
+- Infrastructure’s code functionalities include module and configuration file reading and interpolation.
+- Building a Resource Graph
+- RPC-based plugin communication
+- Plan implementation
+- Resource state management
+Read more from [Terraform-automate-aws](https://k21academy.com/terraform-iac/terraform-automate-aws-vm/)
+
+### Q. How will you upgrade plugins on Terraform?
+Answer: Terraform providers are distributed separately from the Terraform binary since Terraform v0.10. This allows them to update at different rates while also allowing a larger group of people to collaborate on the providers. This is mostly positive, but it adds a new step for upgrading providers.
+
+![Upgrade](https://k21academy.com/wp-content/uploads/2022/01/upgradeeeeeeeeeee.png)
+
+### Q. How will you control and handle rollbacks when something goes wrong?
+ANswer: We will recommit the previous version of the code to my VCS as the new and current version. A terraform run will be triggered, which will be in charge of running the old code. Remember that terraform is more declarative. Check that the old code contains everything that was specified in the code for rollback.
+
+Ensure that it is not destroyed when the old code is run due to a lack of these. If the state file becomes corrupted as a result of a recent Terraform run, I will use Terraform Enterprise’s State Rollback feature to roll back to the most recent good state. Because every state change is versioned, this could be done.
+
+### Q. How can you define dependencies in Terraform?
+Answer: You can use depends_on to declare the dependency explicitly. You can also specify multiple resources in the depends on argument, and Terraform will create the target resource after all of them have been created.
+
+### Q. What is the external data block in Terraform?
+Answer: The external data source allows an external programme to act as a data source by exposing arbitrary data for use elsewhere in the Terraform configuration by implementing a specific protocol.
+
+### Q. What happens when multiple engineers start deploying infrastructure using the same state file?
+Answer: Terraform has a critical feature known as “state locking.” This feature ensures that no changes to the state file are made during a run, preventing the state file from becoming corrupt. It is important to note that the state locking feature is not supported by all Terraform Backends. If this feature is required, you should select the appropriate backend.
+[https://k21academy.com/terraform-iac/variables-in-terraform/](Terraform variable)
+
+### Q. Which value of the TF_LOG variable provides the MOST verbose logging?
+Answer: TRACE is the most verbose option, and it is the default if TF_LOG is not set to a log level name. When logging is enabled, you can set TF_LOG_PATH to force the log to always be appended to a specific file.
+
+### Q. Which command can be used to preview the terraform execution plan?
+Answer: The terraform plan command generates an execution plan, which allows you to preview the changes that Terraform intends to make to your infrastructure. When Terraform generates a plan by default, it:
+
+- Reads the current state of any existing remote objects to ensure the Terraform state is current.
+- The current configuration is compared to the previous state, and any differences are noted.
+- Proposes a set of change actions that, if executed, should cause the remote objects to match the configuration.
+
+### Q. Which command can be used to reconcile the Terraform state with the actual real-world infrastructure?
+Answer: Terraform aids in the detection and management of drift. The state file stores information about the real-world state of Terraform-managed infrastructure. The command terraform refresh refreshes this state file, reconciling what Terraform believes is running and its configuration with what is actually running and configured.
+
+### Q. What is the benefit of Terraform State? What is the benefit of using modules in terraform?
+Answer: Terraform state is primarily used to store bindings between remote system items and resource instances specified in your configuration. When Terraform generates a remote object in response to a configuration change, it saves the remote object’s identification to a specific resource instance and may update or remove that object in response to future configuration changes.
+
+We can save time and avoid costly errors by reusing configuration created by you, other members of your team, or other Terraform experts who have published modules for you to use.
+
+## Some other important terraform commands for technical terraform interview Questions:
+
+- terraform init: In order to prepare the working directory for use with Terraform, the terraform init command performs Backend Initialization, Child Module Installation, and Plugin Installation.
+
+- terraform apply: The terraform apply command executes the actions proposed in a Terraform plan
+
+- terraform apply –auto-approve: Skips interactive approval of plan before applying.
+
+- terraform destroy: The terraform destroy command is a convenient way to destroy all remote objects managed by a particular Terraform configuration.
+
+- terraform fmt: The terraform fmt command is used to rewrite Terraform configuration files to a canonical format and style
+
+- terraform show: The terraform show command is used to provide human-readable output from a state or plan file
