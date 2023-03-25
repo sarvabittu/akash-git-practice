@@ -778,14 +778,14 @@ We can save time and avoid costly errors by reusing configuration created by you
 
 ## Some other important terraform commands for technical terraform interview Questions:
 
-- terraform init: In order to prepare the working directory for use with Terraform, the terraform init command performs Backend Initialization, Child Module Installation, and Plugin Installation.
+- **terraform init:** In order to prepare the working directory for use with Terraform, the terraform init command performs Backend Initialization, Child Module Installation, and Plugin Installation.
 
-- terraform apply: The terraform apply command executes the actions proposed in a Terraform plan
+- **terraform apply:** The terraform apply command executes the actions proposed in a Terraform plan
 
-- terraform apply –auto-approve: Skips interactive approval of plan before applying.
+- **terraform apply –auto-approve:** Skips interactive approval of plan before applying.
 
-- terraform destroy: The terraform destroy command is a convenient way to destroy all remote objects managed by a particular Terraform configuration.
+- **terraform destroy:** The terraform destroy command is a convenient way to destroy all remote objects managed by a particular Terraform configuration.
 
-- terraform fmt: The terraform fmt command is used to rewrite Terraform configuration files to a canonical format and style
+- **terraform fmt:** The terraform fmt command is used to rewrite Terraform configuration files to a canonical format and style
 
-- terraform show: The terraform show command is used to provide human-readable output from a state or plan file
+- **terraform show:** The terraform show command is used to provide human-readable output from a state or plan file
